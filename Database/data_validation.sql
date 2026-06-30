@@ -1,47 +1,47 @@
--- Is database ko use karo jisme EV ka data rakha hai.
+-- Use the database that stores EV data.
 USE ev_analytics;
 
--- Manufacturer table me total rows count karo.
--- Isse pata chalega kitni companies ka data load hua hai.
+-- Count total rows in the manufacturer table.
+-- This shows how many companies were loaded.
 SELECT
     COUNT(*)
 FROM manufacturer;
 
--- Category table me total rows count karo.
--- Isse pata chalega kitni vehicle categories ka data load hua hai.
+-- Count total rows in the category table.
+-- This shows how many vehicle categories were loaded.
 SELECT
     COUNT(*)
 FROM category;
 
--- Sales table me total rows count karo.
--- Isse pata chalega kitne sales records load hue hain.
+-- Count total rows in the sales table.
+-- This shows how many sales records were loaded.
 SELECT
     COUNT(*)
 FROM sales;
 
--- Sales table ke first 5 records dikhao.
--- Isse quickly check hota hai data sahi dikh raha hai ya nahi.
+-- Show the first 5 records from the sales table.
+-- This helps quickly check if the data looks correct.
 SELECT
     *
 FROM sales
 LIMIT 5;
 
--- Manufacturer table ke first 5 records dikhao.
--- Isse company data ka sample check hota hai.
+-- Show the first 5 records from the manufacturer table.
+-- This helps check a small sample of company data.
 SELECT
     *
 FROM manufacturer
 LIMIT 5;
 
--- Category table ke first 5 records dikhao.
--- Isse category data ka sample check hota hai.
+-- Show the first 5 records from the category table.
+-- This helps check a small sample of category data.
 SELECT
     *
 FROM category
 LIMIT 5;
 
--- Sales table me missing values check karo.
--- Agar koi important column NULL hai, to data incomplete ho sakta hai.
+-- Check missing values in the sales table.
+-- If an important column is NULL, the data may be incomplete.
 SELECT
     *
 FROM sales
@@ -51,8 +51,8 @@ WHERE
     OR sales_year IS NULL
     OR sales_count IS NULL;
 
--- Duplicate sales_id check karo.
--- Agar same sales_id ek se zyada baar hai, to duplicate record ho sakta hai.
+-- Check duplicate sales_id values.
+-- If the same sales_id appears more than once, it may be a duplicate record.
 SELECT
     sales_id,
     COUNT(*) AS Duplicate_Count

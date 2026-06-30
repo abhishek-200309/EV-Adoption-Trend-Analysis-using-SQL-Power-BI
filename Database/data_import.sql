@@ -1,4 +1,4 @@
--- Is database ko use karo jisme EV ka data rakha hai.
+-- Use the database that stores EV data.
 use ev_analytics;
 
 
@@ -6,46 +6,46 @@ use ev_analytics;
 
 
 
--- manufacturer.csv file se company ka data manufacturer table me daalo.
--- Yeh file MySQL ke Uploads folder me rakhi hai.
+-- Load company data from manufacturer.csv into the manufacturer table.
+-- This file is stored in the MySQL Uploads folder.
 LOAD DATA INFILE 'C:/ProgramData/MySQL/MySQL Server 8.0/Uploads/manufacturer.csv'
 INTO TABLE manufacturer
--- CSV file me har value comma se alag hoti hai.
+-- In a CSV file, each value is separated by a comma.
 FIELDS TERMINATED BY ','
--- Agar koi value double quotes me ho, to MySQL usko sahi se padhega.
+-- If a value is inside double quotes, MySQL will read it correctly.
 ENCLOSED BY '"'
--- Har nayi line ek naya record hota hai.
+-- Each new line is one new record.
 LINES TERMINATED BY '\n'
--- Pehli row me column names hote hain, isliye usko skip karo.
+-- Skip the first row because it contains column names.
 IGNORE 1 ROWS
--- CSV ke columns ko table ke columns se match karo.
+-- Match the CSV columns with the table columns.
 (manufacturer_id, manufacturer, place, state);
 
 
 
--- sales.csv file se sales ka data sales table me daalo.
--- Isme kis company ne kis category ki kitni gaadiyan bechi, yeh data aata hai.
+-- Load sales data from sales.csv into the sales table.
+-- This data tells which company sold how many vehicles in each category.
 LOAD DATA INFILE 'C:/ProgramData/MySQL/MySQL Server 8.0/Uploads/sales.csv'
 INTO TABLE sales
--- CSV file me har value comma se alag hoti hai.
+-- In a CSV file, each value is separated by a comma.
 FIELDS TERMINATED BY ','
--- Agar koi value double quotes me ho, to MySQL usko sahi se padhega.
+-- If a value is inside double quotes, MySQL will read it correctly.
 ENCLOSED BY '"'
--- Har nayi line ek naya record hota hai.
+-- Each new line is one new record.
 LINES TERMINATED BY '\n'
--- Pehli row me column names hote hain, isliye usko skip karo.
+-- Skip the first row because it contains column names.
 IGNORE 1 ROWS;
 
 
--- category.csv file se category ka data category table me daalo.
--- Jaise car, bike, bus type groups ka data.
+-- Load category data from category.csv into the category table.
+-- This file has groups like car, bike, and bus.
 LOAD DATA INFILE 'C:/ProgramData/MySQL/MySQL Server 8.0/Uploads/category.csv'
 INTO TABLE category
--- CSV file me har value comma se alag hoti hai.
+-- In a CSV file, each value is separated by a comma.
 FIELDS TERMINATED BY ','
--- Agar koi value double quotes me ho, to MySQL usko sahi se padhega.
+-- If a value is inside double quotes, MySQL will read it correctly.
 ENCLOSED BY '"'
--- Har nayi line ek naya record hota hai.
+-- Each new line is one new record.
 LINES TERMINATED BY '\n'
--- Pehli row me column names hote hain, isliye usko skip karo.
+-- Skip the first row because it contains column names.
 IGNORE 1 ROWS;

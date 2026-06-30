@@ -1,12 +1,12 @@
 -- Intermediate SQL (Project-Specific)
--- Is file me thode advanced sawaal solve kiye gaye hain.
--- Yahan hum tables ko JOIN karte hain aur grouped data se answers nikalte hain.
+-- This file solves slightly advanced questions.
+-- Here we join tables and use grouped data to find answers.
 
 USE ev_analytics;
 
--- Sawaal 1: Har manufacturer ka total registration dikhao.
--- Manufacturer table se company ka naam aata hai.
--- Registration table se us company ki registrations add hoti hain.
+-- Question 1: Show total registrations for each manufacturer.
+-- The manufacturer table gives the company name.
+-- The registration table gives the registration counts for that company.
 SELECT
     m.manufacturer,
     SUM(r.registration_count) AS Total_Registrations
@@ -18,9 +18,9 @@ GROUP BY
 ORDER BY
     Total_Registrations;
 
--- Sawaal 2: Har category ka total registration dikhao.
--- Category table se category name aata hai.
--- Registration table se us category ki registrations add hoti hain.
+-- Question 2: Show total registrations for each category.
+-- The category table gives the category name.
+-- The registration table gives the registration counts for that category.
 SELECT
     c.category,
     SUM(r.registration_count) AS Total_Registrations
@@ -32,8 +32,8 @@ GROUP BY
 ORDER BY
     Total_Registrations;
 
--- Sawaal 3: Manufacturer aur category dono ke hisaab se total registrations dikhao.
--- Isse pata chalta hai kis company ne kis category me kitni registrations ki.
+-- Question 3: Show total registrations by manufacturer and category.
+-- This shows how many registrations each company has in each category.
 SELECT
     m.manufacturer,
     c.category,
@@ -49,10 +49,10 @@ GROUP BY
 ORDER BY
     Total_Registrations;
 
--- Sawaal 4: Un manufacturers ko dikhao jinka total registration overall average se zyada hai.
--- Pehle har manufacturer ka total registration nikalte hain.
--- Phir un totals ka average nikalte hain.
--- Sirf wahi manufacturers dikhate hain jinka total average se zyada hai.
+-- Question 4: Show manufacturers whose total registrations are above the overall average.
+-- First, find the total registrations for each manufacturer.
+-- Then, find the average of those totals.
+-- Finally, show only manufacturers whose total is above that average.
 SELECT
     m.manufacturer,
     SUM(r.registration_count) AS Total_Registrations
@@ -77,8 +77,8 @@ HAVING
 ORDER BY
     Total_Registrations DESC;
 
--- Sawaal 5: Har manufacturer ke year-wise registrations dikhao.
--- Matlab har company ne har saal kitni EV registrations ki.
+-- Question 5: Show year-wise registrations for each manufacturer.
+-- This shows how many EV registrations each company has in each year.
 SELECT
     m.manufacturer,
     r.registration_year,
@@ -93,8 +93,8 @@ ORDER BY
     m.manufacturer,
     r.registration_year;
 
--- Sawaal 6: Har category ke year-wise registrations dikhao.
--- Matlab har saal me har category ki kitni registrations hui.
+-- Question 6: Show category-wise registrations for each year.
+-- This shows how many registrations each category has in each year.
 SELECT
     c.category,
     r.registration_year,
@@ -106,18 +106,22 @@ GROUP BY
     c.category,
     r.registration_year;
 
--- Sawaal 7: Har vehicle class ka total registration dikhao.
--- Isse top vehicle class identify karne me help milti hai.
+-- Question 7: Show the top vehicle class by registrations.
+-- First, find the total registrations for each vehicle class.
+-- Then, sort from highest to lowest and show only the top one.
 SELECT
     vehicle_class,
     SUM(registration_count) AS Total_Registrations
 FROM registration
 GROUP BY
-    vehicle_class;
+    vehicle_class
+ORDER BY
+    Total_Registrations DESC
+LIMIT 1;
 
--- Sawaal 8: Aise manufacturers dikhao jinke registrations har year me hain.
--- COUNT DISTINCT years batata hai company kitne alag years me present hai.
--- Agar yeh total years ke barabar hai, matlab company har year me hai.
+-- Question 8: Show manufacturers that have registrations in every year.
+-- COUNT DISTINCT years tells how many different years the company appears in.
+-- If this count equals the total number of years, the company appears every year.
 SELECT
     m.manufacturer
 FROM manufacturer AS m
@@ -132,8 +136,8 @@ HAVING
         FROM registration
     );
 
--- Sawaal 9: Aise manufacturers dikhao jinke paas sirf ek vehicle class hai.
--- DISTINCT vehicle_class count 1 hai to matlab sirf ek type ki vehicle class hai.
+-- Question 9: Show manufacturers that have only one vehicle class.
+-- If the distinct vehicle class count is 1, the company has only one class.
 SELECT
     m.manufacturer
 FROM manufacturer AS m
@@ -144,8 +148,8 @@ GROUP BY
 HAVING
     COUNT(DISTINCT r.vehicle_class) = 1;
 
--- Sawaal 10: Registrations ko Low, Medium, High jaise groups me divide karo.
--- CASE condition ke hisaab se label banata hai.
+-- Question 10: Divide registrations into adoption level groups.
+-- CASE creates a label based on the registration count.
 SELECT
     CASE
         WHEN registration_count = 0 THEN 'NO Adoption'
@@ -158,8 +162,8 @@ FROM registration
 GROUP BY
     Adoption_Levels;
 
--- Sawaal 11: Aise manufacturers dikhao jinke paas ek se zyada categories hain.
--- COUNT DISTINCT category_id batata hai company kitni categories me hai.
+-- Question 11: Show manufacturers that have more than one category.
+-- COUNT DISTINCT category_id tells how many categories a company has.
 SELECT
     m.manufacturer,
     COUNT(DISTINCT r.category_id) AS Category_Count
@@ -169,10 +173,10 @@ JOIN registration AS r
 GROUP BY
     m.manufacturer
 HAVING
-    COUNT(r.category_id) > 1;
+    COUNT(DISTINCT r.category_id) > 1;
 
--- Sawaal 12: Har manufacturer ka average registration dikhao.
--- AVG average value nikalta hai.
+-- Question 12: Show average registrations for each manufacturer.
+-- AVG finds the average value.
 SELECT
     m.manufacturer,
     AVG(r.registration_count) AS Average_Count
@@ -182,8 +186,8 @@ JOIN registration AS r
 GROUP BY
     m.manufacturer;
 
--- Sawaal 13: Har state ka total registration dikhao.
--- Manufacturer table se state milti hai, registration table se count milta hai.
+-- Question 13: Show total registrations for each state.
+-- The manufacturer table gives the state, and the registration table gives the count.
 SELECT
     m.state,
     SUM(r.registration_count) AS Total_Registrations
@@ -193,8 +197,8 @@ JOIN registration AS r
 GROUP BY
     m.state;
 
--- Sawaal 14: Har place ka total registration dikhao.
--- Place ke hisaab se registrations ko group karke total nikalte hain.
+-- Question 14: Show total registrations for each place.
+-- This groups registrations by place and finds the total.
 SELECT
     m.place,
     SUM(r.registration_count) AS Total_Registrations
@@ -204,8 +208,8 @@ JOIN registration AS r
 GROUP BY
     m.place;
 
--- Sawaal 15: Aise manufacturers dikhao jinke total registrations 50,000 se zyada hain.
--- HAVING grouped total par condition lagata hai.
+-- Question 15: Show manufacturers with total registrations greater than 50,000.
+-- HAVING filters the grouped total.
 SELECT
     m.manufacturer,
     SUM(r.registration_count) AS Total_Registrations
@@ -217,8 +221,8 @@ GROUP BY
 HAVING
     SUM(r.registration_count) > 50000;
 
--- Sawaal 16: Aisi categories dikhao jinka total registration 10,000 se zyada hai.
--- Note: Query AVG dikhati hai, lekin HAVING me total SUM check ho raha hai.
+-- Question 16: Show categories with average registrations above 10,000.
+-- AVG checks the average registration count for each category.
 SELECT
     c.category,
     AVG(r.registration_count) AS Average_Registrations
@@ -228,11 +232,11 @@ JOIN registration AS r
 GROUP BY
     c.category
 HAVING
-    SUM(r.registration_count) > 10000;
+    AVG(r.registration_count) > 10000;
 
--- Sawaal 17: Kis year me average registrations sabse zyada hain?
--- DESC sabse bade average ko upar laata hai.
--- LIMIT 1 sirf highest year dikhata hai.
+-- Question 17: Show the year with the highest average registrations.
+-- DESC puts the biggest average first.
+-- LIMIT 1 shows only the highest year.
 SELECT
     registration_year,
     AVG(registration_count) AS Average_Registrations
@@ -243,16 +247,16 @@ ORDER BY
     Average_Registrations DESC
 LIMIT 1;
 
--- Sawaal 18: Aise manufacturers dikhao jinka naam T se start hota hai.
--- LIKE 'T%' ka matlab naam T se shuru ho aur aage kuch bhi ho sakta hai.
+-- Question 18: Show manufacturers whose name starts with T.
+-- LIKE 'T%' means the name starts with T and can have anything after it.
 SELECT
     manufacturer
 FROM manufacturer
 WHERE
     manufacturer LIKE 'T%';
 
--- Sawaal 19: Manufacturers ko total registrations ke hisaab se sort karke dikhao.
--- Pehle total niklega, phir ORDER BY se sorting hogi.
+-- Question 19: Show manufacturers sorted by total registrations.
+-- First the total is calculated, then ORDER BY sorts the result.
 SELECT
     m.manufacturer,
     SUM(r.registration_count) AS Total_Registrations
@@ -264,9 +268,9 @@ GROUP BY
 ORDER BY
     Total_Registrations;
 
--- Sawaal 20: Top 3 states dikhao jahan registrations sabse zyada hain.
--- DESC highest registrations ko upar laata hai.
--- LIMIT 3 sirf top 3 states dikhata hai.
+-- Question 20: Show the top 3 states by total registrations.
+-- DESC puts the highest registrations first.
+-- LIMIT 3 shows only the top 3 states.
 SELECT
     m.state,
     SUM(r.registration_count) AS Total_Registrations

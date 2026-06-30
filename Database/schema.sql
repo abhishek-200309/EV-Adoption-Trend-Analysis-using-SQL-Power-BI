@@ -1,27 +1,27 @@
--- Is database ko use karo jisme EV ka data rakha hai.
+-- Use the database that stores EV data.
 use ev_analytics;
 
--- Yeh table EV banane wali companies ki list rakhti hai.
--- manufacturer_id har company ka unique roll number jaisa hai.
--- manufacturer me company ka naam aata hai.
--- place aur state batate hain company kahan se hai.
+-- This table stores the list of EV manufacturers.
+-- manufacturer_id is a unique number for each company.
+-- manufacturer stores the company name.
+-- place and state tell where the company is located.
 create table manufacturer(manufacturer_id int,manufacturer varchar(40),place varchar(50),
 state varchar(50));
 
 
--- Yeh table gaadi ki category rakhti hai.
--- Jaise scooter, car, bus, ya bike type groups.
--- category_id har category ka unique number hai.
+-- This table stores vehicle categories.
+-- Examples: scooter, car, bus, or bike groups.
+-- category_id is a unique number for each category.
 create table category(category_id int, category VARCHAR (50));
 
--- Yeh table batati hai kis company ne kis type ki kitni EV bechi.
--- sales_id har sales record ka unique number hai.
--- manufacturer_id batata hai sale kis company ki hai.
--- category_id batata hai gaadi kis category ki hai.
--- vehicle_class gaadi ka class/type batata hai.
--- sales_year batata hai sale kis saal ki hai.
--- sales_count batata hai kitni gaadiyan bechi gayi.
--- created_at batata hai yeh record kab banaya gaya.
+-- This table stores EV sales data.
+-- sales_id is a unique number for each sales record.
+-- manufacturer_id tells which company the sale belongs to.
+-- category_id tells which category the vehicle belongs to.
+-- vehicle_class tells the type or class of the vehicle.
+-- sales_year tells the year of the sale.
+-- sales_count tells how many vehicles were sold.
+-- created_at tells when this record was created.
 create table sales(
     sales_id int,manufacturer_id int,
     category_id int,vehicle_class varchar(50),
@@ -30,38 +30,38 @@ create table sales(
     );
 
 
--- Manufacturer table me manufacturer_id ko main unique key banao.
--- Isse do companies ka same id nahi ho sakta.
+-- Make manufacturer_id the main unique key in the manufacturer table.
+-- This means two companies cannot have the same id.
 alter table manufacturer add CONSTRAINT pk_manufacturer primary key(manufacturer_id);
 
--- Category table me category_id ko main unique key banao.
--- Isse do categories ka same id nahi ho sakta.
+-- Make category_id the main unique key in the category table.
+-- This means two categories cannot have the same id.
 alter table category add constraint pk_category primary key(category_id);
 
--- Sales table me sales_id ko main unique key banao.
--- Isse har sales record alag pehchana ja sakta hai.
+-- Make sales_id the main unique key in the sales table.
+-- This helps identify each sales record separately.
 alter table sales add constraint pk_sales PRIMARY KEY (sales_id);
 
--- Sales table ko manufacturer table se jodo.
--- Matlab sales me jo manufacturer_id hai, woh manufacturer table me hona chahiye.
+-- Connect the sales table with the manufacturer table.
+-- The manufacturer_id in sales must exist in the manufacturer table.
 ALTER TABLE sales
 ADD CONSTRAINT fk_sales_manufacturer
 FOREIGN KEY (manufacturer_id)
 REFERENCES manufacturer(manufacturer_id);
 
--- Sales table ko category table se jodo.
--- Matlab sales me jo category_id hai, woh category table me hona chahiye.
+-- Connect the sales table with the category table.
+-- The category_id in sales must exist in the category table.
 alter table sales 
 add constraint fk_sales_category
 Foreign Key (category_id) REFERENCES category (category_id);
 
--- sales_year ko number type bana do, kyunki sirf year store karna hai.
+-- Change sales_year to a number type because we only store the year.
 -- Example: 2020, 2021, 2022.
 ALTER TABLE sales
 modify sales_year SMALLINT;
 
--- sales_count ko integer bana do, kyunki gaadiyon ki count whole number hoti hai.
--- Example: 10 gaadiyan, 25 gaadiyan; 10.5 gaadi nahi hoti.
+-- Change sales_count to an integer because vehicle count is a whole number.
+-- Example: 10 vehicles or 25 vehicles, not 10.5 vehicles.
 ALTER TABLE sales
 modify sales_count int;
 
